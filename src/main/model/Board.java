@@ -15,7 +15,11 @@ public class Board {
         for(int k=0;k<mines;k++) {
             int column = random.nextInt(height);
             int row = random.nextInt(width);
-            boardTile[column][row] = new Tile(true, 0);
+            if (boardTile[column][row]==null) {
+                boardTile[column][row] = new Tile(true, 0);
+            } else {
+                k--;
+            }
         }
         for(int i=0;i<height;i++) {
             for(int j=0;j<width;j++) {

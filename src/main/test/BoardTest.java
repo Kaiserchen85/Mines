@@ -22,7 +22,7 @@ public class BoardTest {
         for(int i=0;i<10;i++) {
             for(int j=0;j<10;j++) {
                 assertNotNull(board.getBoardTile()[i][j]);
-                if(board.getBoardTile()[i][i].isMine()) {
+                if(board.getBoardTile()[i][j].isMine()) {
                     mines++;
                 }
             }
