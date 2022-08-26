@@ -13,10 +13,10 @@ public class Board {
         boardTile = new Tile[height][width];
         Random random = new Random();
         for(int k=0;k<mines;k++) {
-            int column = random.nextInt(height);
-            int row = random.nextInt(width);
-            if (boardTile[column][row]==null) {
-                boardTile[column][row] = new Tile(true, 0);
+            int row = random.nextInt(height);
+            int column = random.nextInt(width);
+            if (boardTile[row][column]==null) {
+                boardTile[row][column] = new Tile(true, 0);
             } else {
                 k--;
             }
@@ -32,10 +32,10 @@ public class Board {
 
     //REQUIRES: integers >=0
     //EFFECTS: checks surroundings for mines and returns the number of mines
-    public int checkSurrounding(int column, int row, int height, int width) {
+    public int checkSurrounding(int row, int column, int height, int width) {
         int mineCount = 0;
-        for(int i=column-1;i<column+2;i++) {
-            for(int j=row-1;j<row+2;j++) {
+        for(int i=row-1;i<row+2;i++) {
+            for(int j=column-1;j<column+2;j++) {
                 if (i>=0 && j>=0 && i<height && j<width) {
                     if (boardTile[i][j]!=null) {
                         if (boardTile[i][j].isMine()) {

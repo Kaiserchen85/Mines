@@ -32,7 +32,9 @@ public class IntroWindow extends JFrame implements ActionListener {
         width = new JTextField(TEXT_FIELD_COLUMN);
         mines = new JTextField(TEXT_FIELD_COLUMN);
         add(boardSetupPanel(), BorderLayout.NORTH);
-        add(new JButton("Ok"));
+        JButton confirmation = new JButton("Ok");
+        confirmation.addActionListener(this);
+        add(confirmation);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
