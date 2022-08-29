@@ -7,7 +7,8 @@ public class Board {
 
     public Tile[][] boardTile;
 
-    //REQUIRES: all integers >0, the number of mines must be less than the dimensions
+    //REQUIRES: all integers >0, the number of mines must be less than the dimensions,
+    //          the number of mines cannot be greater or equal to the total number of tiles
     //EFFECTS: Creates a randomized board for the mines and tiles based on given dimensions and mine count
     public Board(int height, int width, int mines) {
         boardTile = new Tile[height][width];

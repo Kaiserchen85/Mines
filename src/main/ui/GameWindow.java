@@ -11,6 +11,7 @@ public class GameWindow extends JFrame {
 
     public static final int WIDTH = 2000;
     public static final int HEIGHT = 1400;
+    public static final Font font = new Font("Serif Plain", Font.BOLD, 30);
 
     public TileButton[][] buttonBoard;
     public Board board;
@@ -39,7 +40,7 @@ public class GameWindow extends JFrame {
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         add(flagCountPanel(), BorderLayout.NORTH);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -48,10 +49,11 @@ public class GameWindow extends JFrame {
     //EFFECTS: Makes a panel that tracks the number of "mines" flagged
     private JPanel flagCountPanel() {
         flagCountPanel = new JPanel();
+        JLabel label = new JLabel("Flags Left: ");
+        label.setFont(font);
         JLabel flagCountLabel = new JLabel(Integer.toString(flagsLeft));
-        Font font = flagCountLabel.getFont();
-        font = font.deriveFont(font.getSize() * 10);
         flagCountLabel.setFont(font);
+        flagCountPanel.add(label);
         flagCountPanel.add(flagCountLabel);
         return flagCountPanel;
     }
@@ -68,7 +70,7 @@ public class GameWindow extends JFrame {
     }
 
     //MODIFIES: this
-    //EFFECTS: decreases flag count and reflects change on the flag count panel
+    //EFFECTS: Decreases flag count and reflects change on the flag count panel
     public void decreaseFlagsLeft() {
         flagsLeft--;
         remove(flagCountPanel);
@@ -78,7 +80,7 @@ public class GameWindow extends JFrame {
     }
 
     //MODIFIES: this
-    //EFFECTS: increases flag count and reflects change on the flag count panel
+    //EFFECTS: Increases flag count and reflects change on the flag count panel
     public void increaseFlagsLeft() {
         flagsLeft++;
         remove(flagCountPanel);
@@ -87,7 +89,19 @@ public class GameWindow extends JFrame {
         flagCountPanel.repaint();
     }
 
-    //EFFECTS: ends game by revealing all the tiles
+    //EFFECTS: Returns true if all non-mine tiles are revealed
+    public boolean isFinished() {
+        for(int i=0;i<height;i++) {
+            for(int j=0;j<width;j++) {
+                if(!board.getBoardTile()[i][j].isMine() && !board.getBoardTile()[i][j].isRevealed()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //EFFECTS: Ends game by revealing all the tiles
     public void endGame() {
         for(int i=0;i<height;i++) {
             for(int j=0;j<width;j++) {
@@ -129,7 +143,7 @@ public class GameWindow extends JFrame {
     }
 
     //EFFECTS: Reveals the surrounding tiles of a fixed tile. Does so recursively if there are no nearby mines
-             //If it hits a mine, it ends the game
+    //         If it hits a mine, it ends the game
     public void openSurrounding(int row, int column) {
         for(int i=row-1;i<row+2;i++) {
             for(int j=column-1;j<column+2;j++) {
