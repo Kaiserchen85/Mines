@@ -4,6 +4,9 @@ import main.model.Board;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //Window of the playable minesweeper board
@@ -17,9 +20,16 @@ public class GameWindow extends JFrame {
     public Board board;
     public JPanel flagCountPanel;
     public JPanel boardPanel;
+    public Timer timer;
+    public JLabel timerDisplay;
     public int height;
     public int width;
     public int flagsLeft;
+    public int second;
+    public int minute;
+    public String decimalFormatSecond;
+    public String decimalFormatMinute;
+    DecimalFormat decimalFormat;
 
     //EFFECTS: Creates window for the game
     public GameWindow(int height, int width, int mines) {
@@ -27,8 +37,15 @@ public class GameWindow extends JFrame {
         this.height = height;
         this.width = width;
         flagsLeft = mines;
+        timer = new Timer(1000, new TimerListener());
+        second = 0;
+        minute = 0;
+        decimalFormat = new DecimalFormat("00");
+        timerDisplay = new JLabel();
+        timerDisplay.setText("00:00");
         buttonBoard = new TileButton[height][width];
         initializeGraphics();
+        timer.start();
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(height, width));
         setupBoard();
@@ -46,20 +63,28 @@ public class GameWindow extends JFrame {
     }
 
     //MODIFIES: this
-    //EFFECTS: Makes a panel that tracks the number of "mines" flagged
+    //EFFECTS: Makes a panel that tracks the number of "mines" flagged and timer
     private JPanel flagCountPanel() {
         flagCountPanel = new JPanel();
+        flagCountPanel.setLayout(new GridLayout(1, 2));
         JLabel label = new JLabel("Flags Left: ");
         label.setFont(font);
         JLabel flagCountLabel = new JLabel(Integer.toString(flagsLeft));
         flagCountLabel.setFont(font);
         flagCountPanel.add(label);
         flagCountPanel.add(flagCountLabel);
+        makeTimer();
         return flagCountPanel;
     }
 
+    //EFFECTS: Creates timer display
+    private void makeTimer() {
+        timerDisplay.setFont(font);
+        flagCountPanel.add(timerDisplay);
+    }
+
     //MODIFIES: this
-    //EFFECTS: Creates the board as an array of buttons to press.
+    //EFFECTS: Creates the board as an array of buttons to press
     private void setupBoard() {
         for(int i=0;i<height;i++) {
             for(int j=0;j<width;j++) {
@@ -102,12 +127,25 @@ public class GameWindow extends JFrame {
     }
 
     //EFFECTS: Ends game by revealing all the tiles
-    public void endGame() {
+    public void endGame(boolean winner) {
         for(int i=0;i<height;i++) {
             for(int j=0;j<width;j++) {
                 buttonBoard[i][j].reveal();
             }
         }
+        timer.stop();
+        flagCountPanel = new JPanel();
+        flagCountPanel.setLayout(new GridLayout(1, 2));
+        JLabel text = new JLabel();
+        text.setFont(font);
+        if(winner) {
+            text.setText("You Win!");
+        } else {
+            text.setText("Oops! You hit a mine!");
+        }
+        flagCountPanel.add(text);
+        makeTimer();
+
     }
 
     //EFFECTS: Finds button that was pressed in the 2D button array and returns the row and column
@@ -150,7 +188,7 @@ public class GameWindow extends JFrame {
                 if (i>=0 && j>=0 && i<height && j<width) {
                     if (!buttonBoard[i][j].getTile().isFlagged()) {
                         if (buttonBoard[i][j].getTile().isMine()) {
-                            endGame();
+                            endGame(false);
                         } else if (buttonBoard[i][j].getTile().getNearbyMines() == 0
                                 && !buttonBoard[i][j].getTile().isRevealed()) {
                             buttonBoard[i][j].reveal();
@@ -161,6 +199,24 @@ public class GameWindow extends JFrame {
                     }
                 }
             }
+        }
+    }
+
+    private class TimerListener implements ActionListener {
+        //EFFECTS: Increments timer
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(minute == 99 && second == 59) {
+                timer.stop();
+            }
+            second++;
+            if(second == 60) {
+                second = 0;
+                minute++;
+            }
+            decimalFormatMinute = decimalFormat.format(minute);
+            decimalFormatSecond = decimalFormat.format(second);
+            timerDisplay.setText(decimalFormatMinute + ":" + decimalFormatSecond);
         }
     }
 }

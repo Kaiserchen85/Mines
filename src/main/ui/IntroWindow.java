@@ -44,24 +44,28 @@ public class IntroWindow extends JFrame implements ActionListener {
     public JPanel boardSetupPanel() {
         JPanel boardSetup = new JPanel();
         boardSetup.setLayout(null);
+
         JLabel heightText = new JLabel("Board Height: ");
         heightText.setFont(font);
         heightText.setBounds(10,20,250, 50);
         height.setBounds(250, 20, 200, 50);
+        boardSetup.add(heightText);
+        boardSetup.add(height);
+
         JLabel widthText = new JLabel("Board Width: ");
         widthText.setFont(font);
         widthText.setBounds(10,80,250, 50);
         width.setBounds(250, 80, 200, 50);
+        boardSetup.add(widthText);
+        boardSetup.add(width);
+
         JLabel minesText = new JLabel("# of Mines: ");
         minesText.setFont(font);
         minesText.setBounds(10,140,250, 50);
         mines.setBounds(250, 140, 200, 50);
-        boardSetup.add(heightText);
-        boardSetup.add(height);
-        boardSetup.add(widthText);
-        boardSetup.add(width);
         boardSetup.add(minesText);
         boardSetup.add(mines);
+
         JButton confirmation = new JButton("Ok");
         confirmation.setBounds(75, 200, 100, 50);
         confirmation.setFont(font);

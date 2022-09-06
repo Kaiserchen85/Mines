@@ -57,9 +57,11 @@ public class TileButton extends JButton {
             if(!tile.isRevealed()) {
                 if (!tile.isFlagged() && SwingUtilities.isLeftMouseButton(e)) {
                     reveal();
-                    if (tile.isMine() || gameWindow.isFinished()) {
-                        gameWindow.endGame();
-                    } else if (tile.getNearbyMines() == 0) {
+                    if (tile.isMine()) {
+                        gameWindow.endGame(false);
+                    } else if(gameWindow.isFinished()) {
+                        gameWindow.endGame(true);
+                    }else if (tile.getNearbyMines() == 0) {
                         ArrayList<Integer> tilePosition = gameWindow.findTile(e.getSource());
                         gameWindow.openSurrounding(tilePosition.get(0), tilePosition.get(1));
                     }
@@ -87,7 +89,7 @@ public class TileButton extends JButton {
                 if(tile.nearbyMines == gameWindow.checkSurrounding(tilePosition.get(0), tilePosition.get(1))) {
                     gameWindow.openSurrounding(tilePosition.get(0), tilePosition.get(1));
                     if(gameWindow.isFinished()) {
-                        gameWindow.endGame();
+                        gameWindow.endGame(true);
                     }
                 }
             }
