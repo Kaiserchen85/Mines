@@ -67,12 +67,9 @@ public class GameWindow extends JFrame {
     private JPanel flagCountPanel() {
         flagCountPanel = new JPanel();
         flagCountPanel.setLayout(new GridLayout(1, 2));
-        JLabel label = new JLabel("Flags Left: ");
+        JLabel label = new JLabel("Flags Left: " + flagsLeft);
         label.setFont(font);
-        JLabel flagCountLabel = new JLabel(Integer.toString(flagsLeft));
-        flagCountLabel.setFont(font);
         flagCountPanel.add(label);
-        flagCountPanel.add(flagCountLabel);
         makeTimer();
         return flagCountPanel;
     }
@@ -134,8 +131,12 @@ public class GameWindow extends JFrame {
             }
         }
         timer.stop();
+        remove(flagCountPanel);
         flagCountPanel = new JPanel();
-        flagCountPanel.setLayout(new GridLayout(1, 2));
+        flagCountPanel.setLayout(new GridLayout(1, 3));
+        JLabel label = new JLabel("Flags Left: " + flagsLeft);
+        label.setFont(font);
+        flagCountPanel.add(label);
         JLabel text = new JLabel();
         text.setFont(font);
         if(winner) {
@@ -145,6 +146,9 @@ public class GameWindow extends JFrame {
         }
         flagCountPanel.add(text);
         makeTimer();
+        add(flagCountPanel, BorderLayout.NORTH);
+        flagCountPanel.revalidate();
+        flagCountPanel.repaint();
 
     }
 

@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 //Window for customizing the board.
 public class IntroWindow extends JFrame implements ActionListener {
 
-    public static final int WIDTH = 500;
+    public static final int WIDTH = 600;
     public static final int HEIGHT = 400;
     public static final int TEXT_FIELD_COLUMN = 5;
     public static final Font font = new Font("Serif Plain", Font.BOLD, 30);
@@ -48,26 +48,26 @@ public class IntroWindow extends JFrame implements ActionListener {
         JLabel heightText = new JLabel("Board Height: ");
         heightText.setFont(font);
         heightText.setBounds(10,20,250, 50);
-        height.setBounds(250, 20, 200, 50);
+        height.setBounds(350, 20, 200, 50);
         boardSetup.add(heightText);
         boardSetup.add(height);
 
         JLabel widthText = new JLabel("Board Width: ");
         widthText.setFont(font);
         widthText.setBounds(10,80,250, 50);
-        width.setBounds(250, 80, 200, 50);
+        width.setBounds(350, 80, 200, 50);
         boardSetup.add(widthText);
         boardSetup.add(width);
 
-        JLabel minesText = new JLabel("# of Mines: ");
+        JLabel minesText = new JLabel("Number of Mines: ");
         minesText.setFont(font);
-        minesText.setBounds(10,140,250, 50);
-        mines.setBounds(250, 140, 200, 50);
+        minesText.setBounds(10,140,300, 50);
+        mines.setBounds(350, 140, 200, 50);
         boardSetup.add(minesText);
         boardSetup.add(mines);
 
         JButton confirmation = new JButton("Ok");
-        confirmation.setBounds(75, 200, 100, 50);
+        confirmation.setBounds(WIDTH/2-50, 200, 100, 50);
         confirmation.setFont(font);
         confirmation.addActionListener(this);
         boardSetup.add(confirmation);
@@ -81,12 +81,12 @@ public class IntroWindow extends JFrame implements ActionListener {
             int height = Integer.parseInt(this.height.getText());
             int width = Integer.parseInt(this.width.getText());
             int mines = Integer.parseInt(this.mines.getText());
-            if (height*width>mines) {
+            if (height*width>mines && height>0 && width>0 && mines>0) {
                 new GameWindow(height, width, mines);
             }
         }
         catch(Exception exception){
-            //nothing happens
+            return;
         }
     }
 }
